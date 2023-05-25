@@ -1,5 +1,6 @@
 from django.db import models
-from core.models import BaseModel, User 
+from core.models import BaseModel 
+from user.models import User
 
 class Category (BaseModel):
     category_id = models.IntegerField(primary_key=True)
