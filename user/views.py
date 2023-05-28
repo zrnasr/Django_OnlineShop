@@ -1,37 +1,70 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from django.http import HttpResponse
 from user.input_form import LoginForm, SignUpForm
 from django.views.generic import View
-
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.backends import ModelBackend
 from django.http import HttpResponseRedirect
 
 class SignUp(View):
     def post(self, request):
         signup_form = SignUpForm(request.POST)
         if signup_form.is_valid():
-            print("saveeeeeeeeeeeeeeeeeeeeeeeeed")
             signup_form.save()
-            return HttpResponseRedirect ("/user/new_user/")
+            return HttpResponseRedirect ("/user/login/")
+        
+        #handle invalid form
         
     def get(self, request):
         signup_form = SignUpForm()
         return render (request, 'register.html', {'signupform': signup_form })
     
-
-def login(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
+class Login(ModelBackend, View):
+    def post(self, request):
+        loginform = LoginForm(request.POST)
+        if loginform.is_valid():
+            phone = request.POST['phone']
+            password = request.POST['password']
+            user = authenticate(phone = phone, password = password)
+            if user is None:
+                return HttpResponse("Invalid credentials.")
+            login(request, user)
             return HttpResponseRedirect("/user/home/")
-    else:
+        else:
+            return HttpResponse("form not valid.")
+
+    def get(self, request):
         loginform = LoginForm()
-    return render(request, 'login.html', {'loginform': loginform})
+        return render(request, 'login.html', {'loginform': loginform})
+    
+
+# def login_user(request):
+#     if request.method == 'POST':
+#         loginform = LoginForm(request.POST)
+#         if loginform.is_valid():
+#             phone_num = request.POST['phone']
+#             password = request.POST['password']
+#             tok = request.POST['csrfmiddlewaretoken']
+#             print(phone_num)
+#             print(password)
+#             print(tok)
+#             user = authenticate(request, phone_num = "phone", password = "password")
+#             if user is None:
+#                 return HttpResponse("Invalid credentials.")
+#             login(request, user)
+            
+#             return HttpResponseRedirect("/user/home/")
+#         else:
+#             return HttpResponse("form not valid.")
+           
+#     else:
+#         loginform = LoginForm()
+#     return render(request, 'login.html', {'loginform': loginform})
 
 
 def home(request):
     return render(request, 'home.html')
 
-def new_user(request):
-    return render (request, "new_user.html")
 
 
 
