@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.urls import reverse
 from user.input_form import LoginForm, SignUpForm
 from django.views.generic import View
 from django.contrib.auth import authenticate, login
@@ -29,46 +30,12 @@ class Login(ModelBackend, View):
             if user is None:
                 return HttpResponse("Invalid credentials.")
             login(request, user)
-            return HttpResponseRedirect("/user/home/")
+            return HttpResponseRedirect(reverse('home'))
         else:
             return HttpResponse("form not valid.")
 
     def get(self, request):
         loginform = LoginForm()
         return render(request, 'login.html', {'loginform': loginform})
-    
 
-# def login_user(request):
-#     if request.method == 'POST':
-#         loginform = LoginForm(request.POST)
-#         if loginform.is_valid():
-#             phone_num = request.POST['phone']
-#             password = request.POST['password']
-#             tok = request.POST['csrfmiddlewaretoken']
-#             print(phone_num)
-#             print(password)
-#             print(tok)
-#             user = authenticate(request, phone_num = "phone", password = "password")
-#             if user is None:
-#                 return HttpResponse("Invalid credentials.")
-#             login(request, user)
-            
-#             return HttpResponseRedirect("/user/home/")
-#         else:
-#             return HttpResponse("form not valid.")
-           
-#     else:
-#         loginform = LoginForm()
-#     return render(request, 'login.html', {'loginform': loginform})
-
-
-def home(request):
-    return render(request, 'home.html')
-
-
-
-
-
-            
-            
 

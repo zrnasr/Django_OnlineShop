@@ -15,7 +15,9 @@ class User(AbstractUser):
 
 
 class Profile(User):
+    postal_code = models.BigIntegerField(('postal_code'), max_length=25)
     age = models.IntegerField(("age"), blank=True)
+    city = models.CharField(('city'), max_length=30)
     home_address = models.TextField('address')
 
     
