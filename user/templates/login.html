@@ -95,7 +95,7 @@
     .login {
         width: 320px;
         padding: 30px;
-        padding-top: 156px;
+        padding-top: 100px;
     }
 
     .login__field {
@@ -178,11 +178,12 @@
                     {% csrf_token %}
                     <div class="login__field">
                         <i class="login__icon fas fa-user"></i>
-                        {{ loginform.phone }}
+                        <!-- {{ loginform.phone }} -->
+                        <input type="text" class="login__input" placeholder="Phone Number">
                     </div>
                     <div class="login__field">
                         <i class="login__icon fas fa-lock"></i>
-                        {{ loginform.password }}
+                        <input type="password" class="login__input" placeholder="Password">
                         
                     </div>
                     <button class="button login__submit">
@@ -191,7 +192,7 @@
                     </button>				
                 </form>
                 <div class="social-login">
-                    <a href=""><h3>Register Now</h3></a>
+                    <a href="{% url 'register' %}"><h3>Register Now</h3></a>
                     
                 </div>
             </div>

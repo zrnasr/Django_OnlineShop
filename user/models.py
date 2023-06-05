@@ -6,8 +6,6 @@ phone_validator = RegexValidator(r'^(?:0|98|\+98|\+980|0098|098|00980)?(9\d{9})$
 
 class User(AbstractUser):
     username = None
-    first_name = None
-    last_name = None
     email = None
     phone = models.CharField(("phone_num"), max_length=15, unique=True, validators=[phone_validator])
     USERNAME_FIELD = 'phone'
@@ -16,7 +14,6 @@ class User(AbstractUser):
 
 class Profile(User):
     postal_code = models.BigIntegerField(('postal_code'), max_length=25)
-    age = models.IntegerField(("age"), blank=True)
     city = models.CharField(('city'), max_length=30)
     home_address = models.TextField('address')
 

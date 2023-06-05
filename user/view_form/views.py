@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls import reverse
-from user.input_form import LoginForm, SignUpForm
+from user.view_form.input_form import LoginForm, SignUpForm
 from django.views.generic import View
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.backends import ModelBackend
@@ -13,7 +13,6 @@ class SignUp(View):
         if signup_form.is_valid():
             signup_form.save()
             return HttpResponseRedirect ("/user/login/")
-        
         #handle invalid form
         
     def get(self, request):

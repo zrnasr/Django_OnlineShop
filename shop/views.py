@@ -5,6 +5,6 @@ def home(request):
 
 
 def profile(request):
-    return render(request, 'simple_page.html')
+    return render(request, 'profile.html')
 
 

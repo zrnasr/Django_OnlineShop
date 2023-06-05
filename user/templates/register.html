@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
 
@@ -95,7 +96,7 @@
     .login {
         width: 320px;
         padding: 30px;
-        padding-top: 156px;
+        padding-top: 100px;
     }
 
     .login__field {
@@ -174,28 +175,31 @@
     <div class="container">
         <div class="screen">
             <div class="screen__content">
-                <form class="login" method="post">
+                <form id="register_form" class="login" method="post">
                     {% csrf_token %}
 
                     <div class="login__field">
                         <i class="login__icon fas fa-lock"></i>
-                        {{ signupform.phone }}
+                        <!-- {{ loginform.phone }} -->
+                        <input id="phone_num" type="text" class="login__input" placeholder="Phone Number">
                     </div>
 
                     <div class="login__field">
                         <i class="login__icon fas fa-lock"></i>
-                        {{ signupform.password1 }}
+                        <!-- {{ signupform.password1 }} -->
+                        <input id="password" type="password" class="login__input" placeholder="Password">
                     </div>
                     <div class="login__field">
                         <i class="login__icon fas fa-lock"></i>
-                        {{ signupform.password2 }}
+                        <!-- {{ signupform.password2 }} -->
+                        <input id="password2" type="password" class="login__input" placeholder="Password Confirmation">
                     </div>
 
                     <input class="button login__submit" type="submit" value="Sign Up" /> 
 				
                 </form>
                 <div class="social-login">
-                    <a href=""><h3>Login Now</h3></a>
+                    <a href="{% url 'login' %}"><h3>Login Now</h3></a>
                     
                 </div>
             </div>
@@ -207,5 +211,42 @@
             </div>		
         </div>
     </div>
+
+    <script>
+
+
+        var registerForm = document.getElementById("register_form");
+        registerForm.addEventListener("submit", (e) =>{
+            e.preventDefault();
+            var reform = new FormData();
+            var phone_number = document.getElementById("phone_num");
+            var password = document.getElementById("password");
+            var password2 = document.getElementById("password2");
+
+
+            if(password.value == "" || password2.value == "" || phone_number.value == "")
+            {
+                alert("Please fill all the fields.");
+            }
+            else if (password.value != password2.value) 
+            {
+                alert("Passwords are not the same! ");
+            } 
+            else 
+            {
+                reform.append('phone', phone_number.value);
+                reform.append('password', password.value);
+                axios.post("{% url 'register' %}", reform)
+                .then(res=>{
+                    console.log(res)
+                })
+                .catch(error=>{
+                    console.log(error)
+                })
+            }
+
+        }
+        )
+    </script>
 </body>
 </html>
