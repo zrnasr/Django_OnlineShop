@@ -238,9 +238,11 @@
                 reform.append('password', password.value);
                 axios.post("{% url 'register' %}", reform)
                 .then(res=>{
+                    alert("congratulation! You have successfuly registered!");
                     console.log(res)
                 })
                 .catch(error=>{
+                    alert("Something seems wrong. :(");
                     console.log(error)
                 })
             }
