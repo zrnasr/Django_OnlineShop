@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from django.http import HttpResponseRedirect
-from user.api.v1.serializers import ProfileSerializer, LoginRegisterSerializer
+from user.api.v1.serializers import ProfileSerializer, LoginSerializer, RegisterSerializer
 
 class ProfilePage(APIView):
     renderer_classes = [TemplateHTMLRenderer]
@@ -28,11 +28,11 @@ class LoginPage(APIView):
 
     def get(self, request):
         users = User.objects.all()
-        serializer = LoginRegisterSerializer(users, many=True)
+        serializer = LoginSerializer(users, many=True)
         return Response({'serializer': serializer})
 
     def post(self, request):
-        serializer = LoginRegisterSerializer(data=request.data)
+        serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -45,14 +45,13 @@ class RegisterPage(APIView):
 
     def get(self, request):
         users = User.objects.all()
-        serializer = LoginRegisterSerializer(users, many=True)
+        serializer = RegisterSerializer(users, many=True)
         return Response({'serializer': serializer})
 
     def post(self, request, format=None):
-        serializer = LoginRegisterSerializer(data=request.data)
+        serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            # return HttpResponseRedirect ("/user/login/")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
