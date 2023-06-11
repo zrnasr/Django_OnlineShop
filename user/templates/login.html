@@ -226,17 +226,27 @@
             lform.append('phone', phone_number.value);
             lform.append('password', password.value)
 
-            axios.defaults.xsrfCookieName = 'csrftoken'
-            axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+            // axios.defaults.xsrfCookieName = 'csrftoken'
+            // axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
 
-            axios.post("{% url 'profile' %}", lform)
+            axios.post("{% url 'dologin' %}", lform)
             .then(res=>{
-                console.log(res)
+                setCookie(`token`, `${res.data.data.token}`, 3)
+                window.location.assign(`{% url 'profile' %}`)
+                
             })
             .catch(error=>{
                 console.log(error)
+                
             })
         }
+
+        function setCookie(cname, cvalue, exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        let expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
 
 
     })

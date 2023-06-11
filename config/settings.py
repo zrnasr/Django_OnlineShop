@@ -125,6 +125,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     'shop/',
+    'user/',
 ]
 
 
